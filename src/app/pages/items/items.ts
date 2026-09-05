@@ -5,10 +5,11 @@ import { Item } from '../../models/item';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ItemFormComponent } from './item-form/item-form';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-items',
-  imports: [RouterLink, ItemFormComponent],
+  imports: [RouterLink, ItemFormComponent, FormsModule],
   templateUrl: './items.html',
   styleUrl: './items.css',
 })
@@ -21,8 +22,19 @@ export class ItemsComponent implements OnInit {
 
   items: Item[] = [];
   loading = false;
+  hasLoaded = false;
   errorMessage = '';
   successMessage = '';
+  searchTerm = ''; // for item searching
+
+  // for pagination
+  currentPage = 1;
+  lastPage = 1;
+  totalItems = 0;
+  fromItem = 0;
+  toItem = 0;
+  perPage = 10;
+  // end
 
   // for item popup model
   showItemForm = false;
@@ -51,7 +63,7 @@ export class ItemsComponent implements OnInit {
     const message = this.isEditMode ? 'Item updated successfully.' : 'Item created successfully.';
     this.closeItemForm();
     this.successMessage = message;
-    this.loadItems();
+    this.loadItems(1);
   }
   // end
 
@@ -64,15 +76,76 @@ export class ItemsComponent implements OnInit {
     this.loadItems();
   }
 
-  loadItems(): void {
+  // for item searching
+  searchItems(): void {
+    // Whenever a new search starts,
+    // start from page 1.
+    this.loadItems(1);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.loadItems(1);
+  }
+  // end
+
+  // for pagination
+  previousPage(): void {
+    if (this.currentPage <= 1) {
+      return;
+    }
+    this.loadItems(this.currentPage - 1);
+  }
+
+  nextPage(): void {
+    if (this.currentPage >= this.lastPage) {
+      return;
+    }
+    this.loadItems(this.currentPage + 1);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1) {
+      return;
+    }
+    if (page > this.lastPage) {
+      return;
+    }
+    if (page === this.currentPage) {
+      return;
+    }
+    this.loadItems(page);
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.lastPage }, (_, index) => index + 1);
+  }
+
+  changePerPage(): void {
+    // Whenever per-page changes,
+    // go back to page 1.
+    this.loadItems(1);
+  }
+  // end
+
+  loadItems(page: number = 1): void {
     this.loading = true;
     this.errorMessage = '';
 
-    this.itemService.getItems().subscribe({
+    this.itemService.getItems(page, this.searchTerm, this.perPage).subscribe({
       next: (response) => {
         console.log('Items response:', response);
         this.items = response.data;
+
+        this.currentPage = response.meta.current_page;
+        this.lastPage = response.meta.last_page;
+        this.totalItems = response.meta.total;
+        this.fromItem = response.meta.from ?? 0;
+        this.toItem = response.meta.to ?? 0;
+
         this.loading = false;
+        this.hasLoaded = true;
+        console.log(this.items);
         this.cdr.detectChanges();
       },
 
@@ -91,12 +164,17 @@ export class ItemsComponent implements OnInit {
     if (!confirmed) {
       return;
     }
-
+    this.loading = true;
     this.itemService.deleteItem(item.id).subscribe({
       next: (response) => {
         console.log('Item deleted:', response);
         this.successMessage = 'Item deleted successfully.';
-        this.loadItems();
+
+        if (this.items.length === 1 && this.currentPage > 1) {
+          this.loadItems(this.currentPage - 1);
+        } else {
+          this.loadItems(this.currentPage);
+        }
       },
 
       error: (error) => {

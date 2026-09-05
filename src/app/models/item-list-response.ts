@@ -15,6 +15,12 @@ export interface ItemListResponse {
     per_page: number;
     to: number | null;
     total: number;
+    links: {
+      url: string | null;
+      label: string;
+      page: number | null;
+      active: boolean;
+    }[];
   };
   success: boolean;
   message: string;

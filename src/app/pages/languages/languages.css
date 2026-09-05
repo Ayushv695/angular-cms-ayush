@@ -287,3 +287,59 @@ td {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------loading table */
+.table-card {
+  position: relative;
+}
+
+.table-loading {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  bottom: 0;
+
+  z-index: 10;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  color: #374151;
+
+  font-size: 14px;
+}
+
+.table-loading-opacity {
+  opacity: 0.5;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+
+  border: 2px solid #d1d5db;
+
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------end */

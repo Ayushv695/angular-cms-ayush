@@ -181,7 +181,7 @@ export class LanguagesComponent implements OnInit {
     if (!confirmed) {
       return;
     }
-
+    this.loading = true;
     this.languageService.deleteLanguage(language.id).subscribe({
       next: (response) => {
         console.log('Language deleted:', response);

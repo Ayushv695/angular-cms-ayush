@@ -10,6 +10,31 @@
   }
 </div>
 
+<div class="list-toolbar">
+  <div class="search-section">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search items..."
+      class="search-input"
+      (keyup.enter)="searchItems()"
+    />
+    <button type="button" class="search-button" (click)="searchItems()">Search</button>
+    <button type="button" class="clear-button" (click)="clearSearch()">Clear</button>
+  </div>
+
+  <div class="per-page-section">
+    <label for="perPage"> Items per page: </label>
+
+    <select id="perPage" [(ngModel)]="perPage" (change)="changePerPage()" class="per-page-select">
+      <option [value]="1">1</option>
+      <option [value]="2">2</option>
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+    </select>
+  </div>
+</div>
+
 @if (errorMessage) {
   <div class="error close-box">
     <span>{{ errorMessage }}</span>
@@ -25,13 +50,17 @@
   </div>
 }
 
-@if (loading) {
+@if (!hasLoaded) {
   <div class="loading">Loading items...</div>
-}
-
-@if (!loading && items.length > 0) {
+} @else {
   <div class="table-card">
-    <table>
+    @if (loading) {
+      <div class="table-loading">
+        <div class="spinner"></div>
+        <span>Loading...</span>
+      </div>
+    }
+    <table [class.table-loading-opacity]="loading">
       <thead>
         <tr>
           <th>Photo</th>
@@ -47,35 +76,47 @@
       </thead>
 
       <tbody>
-        @for (item of items; track item.id) {
-          <tr>
-            <td>
-              @if (item.photo) {
-                <img [src]="item.photo" [alt]="item.name" class="item-photo" />
-              } @else {
-                <div class="no-photo">No Image</div>
-              }
-            </td>
-
-            <td>
-              <strong>
-                {{ item.name }}
-              </strong>
-            </td>
-
-            <td>
-              <a [routerLink]="['/items', item.id, 'translations']" class="translation-button">
-                Manage Translations
-              </a>
-            </td>
-
-            @if (authService.isAdmin()) {
-              <td class="actions">
-                <button class="edit-button" (click)="openEditItem(item)">Edit</button>
-
-                <button class="delete-button" (click)="deleteItem(item)">Delete</button>
+        @if (items.length > 0) {
+          @for (item of items; track item.id) {
+            <tr>
+              <td>
+                @if (item.photo) {
+                  <img [src]="item.photo" [alt]="item.name" class="item-photo" />
+                } @else {
+                  <div class="no-photo">No Image</div>
+                }
               </td>
-            }
+
+              <td>
+                <strong>
+                  {{ item.name }}
+                </strong>
+              </td>
+
+              <td>
+                <a [routerLink]="['/items', item.id, 'translations']" class="translation-button">
+                  Manage Translations
+                </a>
+              </td>
+
+              @if (authService.isAdmin()) {
+                <td class="actions">
+                  <button class="edit-button" (click)="openEditItem(item)">Edit</button>
+
+                  <button class="delete-button" (click)="deleteItem(item)">Delete</button>
+                </td>
+              }
+            </tr>
+          }
+        }
+
+        <!-- EMPTY STATE -->
+
+        @if (!loading && items.length === 0) {
+          <tr>
+            <td [attr.colspan]="authService.isAdmin() ? 4 : 3" class="empty-table-cell">
+              No items found.
+            </td>
           </tr>
         }
       </tbody>
@@ -83,8 +124,68 @@
   </div>
 }
 
-@if (!loading && items.length === 0) {
-  <div class="empty">No items found.</div>
+@if (!loading || lastPage > 0) {
+  <div class="pagination-container">
+    <!-- Information -->
+
+    <div class="pagination-info">
+      @if (totalItems > 0) {
+        Showing
+        <strong>{{ fromItem }}</strong>
+        to
+        <strong>{{ toItem }}</strong>
+        of
+        <strong>{{ totalItems }}</strong>
+        items
+      } @else {
+        Showing
+        <strong>0</strong>
+        of
+        <strong>0</strong>
+        items
+      }
+    </div>
+
+    <!-- Pagination buttons -->
+
+    <div class="pagination-buttons">
+      <!-- Previous -->
+
+      <button
+        type="button"
+        class="pagination-button"
+        (click)="previousPage()"
+        [disabled]="loading || currentPage === 1"
+      >
+        Previous
+      </button>
+
+      <!-- Page numbers -->
+
+      @for (page of pageNumbers; track page) {
+        <button
+          type="button"
+          class="pagination-button"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+          [disabled]="loading"
+        >
+          {{ page }}
+        </button>
+      }
+
+      <!-- Next -->
+
+      <button
+        type="button"
+        class="pagination-button"
+        (click)="nextPage()"
+        [disabled]="loading || currentPage === lastPage"
+      >
+        Next
+      </button>
+    </div>
+  </div>
 }
 
 @if (showItemForm) {

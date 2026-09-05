@@ -15,8 +15,14 @@ export class ItemService {
 
   constructor(private http: HttpClient) {}
 
-  getItems(page: number = 1): Observable<ItemListResponse> {
-    return this.http.get<ItemListResponse>(`${this.apiUrl}/${API.item.list}?page=${page}`);
+  getItems(
+    page: number = 1,
+    search: string = '',
+    perPage: number = 10,
+  ): Observable<ItemListResponse> {
+    return this.http.get<ItemListResponse>(
+      `${this.apiUrl}/${API.item.list}?search=${search}&page=${page}&per_page=${perPage}`,
+    );
   }
 
   // getItem(id: number): Observable<Item> {
