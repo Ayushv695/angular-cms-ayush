@@ -6,13 +6,13 @@ export const API = {
   language: {
     list: 'languages',
     create: 'language/create',
+    update: 'language/update',
+    destroy: 'language/destroy',
   },
-  users: {
-    list: '/users',
-    profile: '/users/profile',
-  },
-  products: {
-    list: '/products',
-    detail: '/products',
+  item: {
+    list: 'items',
+    create: 'item/create',
+    update: 'item/update',
+    destroy: 'item/destroy',
   },
 };

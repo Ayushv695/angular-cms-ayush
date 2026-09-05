@@ -27,6 +27,9 @@ export class LanguagesComponent implements OnInit {
     native_name: '',
   };
 
+  isEditMode = false;
+  editingLanguageId: number | null = null;
+
   constructor(
     private languageService: LanguageService,
     public authService: AuthService,
@@ -85,7 +88,15 @@ export class LanguagesComponent implements OnInit {
     };
   }
 
-  createLanguage(): void {
+  closeForm(): void {
+    this.showAddForm = false;
+    this.isEditMode = false;
+    this.editingLanguageId = null;
+    this.formError = '';
+    this.resetForm();
+  }
+
+  saveLanguage(): void {
     this.formError = '';
     this.successMessage = '';
 
@@ -97,13 +108,36 @@ export class LanguagesComponent implements OnInit {
 
     this.isSaving = true;
 
+    // EDIT
+
+    if (this.isEditMode && this.editingLanguageId !== null) {
+      this.languageService.updateLanguage(this.editingLanguageId, this.newLanguage).subscribe({
+        next: (response) => {
+          console.log('Language updated:', response);
+          this.isSaving = false;
+          this.closeForm();
+          this.successMessage = 'Language updated successfully.';
+          this.loadLanguages();
+        },
+
+        error: (error) => {
+          console.error('Update language error:', error);
+          this.isSaving = false;
+          this.formError = error.error?.message || 'Unable to update language.';
+          this.cdr.detectChanges();
+        },
+      });
+
+      return;
+    }
+
+    // CREATE
     this.languageService.createLanguage(this.newLanguage).subscribe({
       next: (response) => {
         console.log('Language created:', response);
 
         this.isSaving = false;
-        this.showAddForm = false;
-        this.resetForm();
+        this.closeForm();
         this.successMessage = 'Language created successfully.';
         // Reload list
         this.loadLanguages();
@@ -119,6 +153,45 @@ export class LanguagesComponent implements OnInit {
         } else {
           this.formError = error.error?.message || 'Unable to create language.';
         }
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  editLanguage(language: Language): void {
+    this.isEditMode = true;
+    this.editingLanguageId = language.id;
+    this.showAddForm = true;
+
+    this.formError = '';
+    this.successMessage = '';
+
+    this.newLanguage = {
+      name: language.name,
+
+      code: language.code,
+
+      native_name: language.native_name ?? '',
+    };
+  }
+
+  deleteLanguage(language: Language): void {
+    const confirmed = confirm(`Are you sure you want to delete "${language.name}"?`);
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.languageService.deleteLanguage(language.id).subscribe({
+      next: (response) => {
+        console.log('Language deleted:', response);
+        this.successMessage = 'Language deleted successfully.';
+        this.loadLanguages();
+      },
+
+      error: (error) => {
+        console.error('Delete language error:', error);
+        this.errorMessage = error.error?.message || 'Unable to delete language.';
         this.cdr.detectChanges();
       },
     });

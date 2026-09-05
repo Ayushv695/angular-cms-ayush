@@ -15,31 +15,19 @@ export class LanguageService {
 
   constructor(private http: HttpClient) {}
 
-  getLanguages(): Observable<LanguageListResponse> {
-    return this.http.get<LanguageListResponse>(`${this.apiUrl}/${API.language.list}`);
+  getLanguages(page: number = 1): Observable<LanguageListResponse> {
+    return this.http.get<LanguageListResponse>(`${this.apiUrl}/${API.language.list}?page=${page}`);
   }
 
   createLanguage(data: CreateLanguageRequest): Observable<Language> {
     return this.http.post<Language>(`${this.apiUrl}/${API.language.create}`, data);
   }
 
-  getLanguage(id: number): Observable<Language> {
-    return this.http.get<Language>(`${this.apiUrl}/${id}`);
+  updateLanguage(id: number, language: CreateLanguageRequest): Observable<Language> {
+    return this.http.put<Language>(`${this.apiUrl}/${API.language.update}/${id}`, language);
   }
 
-  updateLanguage(
-    id: number,
-    data: {
-      name: string;
-      code: string;
-      native_name?: string;
-      status: boolean;
-    },
-  ): Observable<Language> {
-    return this.http.put<Language>(`${this.apiUrl}/${id}`, data);
-  }
-
-  deleteLanguage(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteLanguage(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${API.language.destroy}/${id}`);
   }
 }
