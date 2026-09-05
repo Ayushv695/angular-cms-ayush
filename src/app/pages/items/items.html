@@ -1,3 +1,88 @@
-<h1>Items</h1>
+<div class="page-header">
+  <div>
+    <h1>Items</h1>
 
-<p>Welcome to Museum CMS</p>
+    <p>Manage museum items and their translations</p>
+  </div>
+
+  @if (authService.isAdmin()) {
+    <button class="primary-button">+ Add Item</button>
+  }
+</div>
+
+@if (loading) {
+  <div class="loading">Loading items...</div>
+}
+
+@if (errorMessage) {
+  <div class="error close-box">
+    <span>{{ errorMessage }}</span>
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+@if (successMessage) {
+  <div class="success close-box">
+    <span>{{ successMessage }}</span>
+
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+@if (!loading && items.length > 0) {
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Photo</th>
+
+          <th>Item Name</th>
+
+          <th>Translations</th>
+
+          @if (authService.isAdmin()) {
+            <th>Actions</th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of items; track item.id) {
+          <tr>
+            <td>
+              @if (item.photo) {
+                <img [src]="item.photo" [alt]="item.name" class="item-photo" />
+              } @else {
+                <div class="no-photo">No Image</div>
+              }
+            </td>
+
+            <td>
+              <strong>
+                {{ item.name }}
+              </strong>
+            </td>
+
+            <td>
+              <a [routerLink]="['/items', item.id, 'translations']" class="translation-button">
+                Manage Translations
+              </a>
+            </td>
+
+            @if (authService.isAdmin()) {
+              <td class="actions">
+                <button class="edit-button">Edit</button>
+
+                <button class="delete-button" (click)="deleteItem(item)">Delete</button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+@if (!loading && items.length === 0) {
+  <div class="empty">No items found.</div>
+}
