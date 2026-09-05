@@ -28,7 +28,7 @@ export class ItemService {
   }
 
   updateItem(id: number, formData: FormData) {
-    return this.http.put(`${this.apiUrl}/${API.item.update}/${id}`, formData);
+    return this.http.post(`${this.apiUrl}/${API.item.update}/${id}`, formData);
   }
 
   deleteItem(id: number): Observable<any> {

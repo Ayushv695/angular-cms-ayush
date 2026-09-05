@@ -1,0 +1,93 @@
+<div class="modal-backdrop" (click)="closePopup()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <!-- Header -->
+
+    <div class="modal-header">
+      <div>
+        <h2>
+          {{ isEditMode ? 'Edit Item' : 'Add Item' }}
+        </h2>
+
+        <p>
+          {{ isEditMode ? 'Update item information.' : 'Add a new item.' }}
+        </p>
+      </div>
+
+      <button type="button" class="close-button" (click)="closePopup()" [disabled]="loading">
+        ×
+      </button>
+    </div>
+
+    <!-- Body -->
+
+    <form (ngSubmit)="saveItem()">
+      <!-- Name -->
+
+      <div class="form-group">
+        <label for="item-name"> Item Name </label>
+
+        <input
+          id="item-name"
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Enter item name"
+          [disabled]="loading"
+        />
+      </div>
+
+      <!-- Photo -->
+
+      <div class="form-group">
+        <label for="item-photo"> Photo </label>
+
+        <input
+          id="item-photo"
+          type="file"
+          accept="image/*"
+          (change)="onPhotoSelected($event)"
+          [disabled]="loading"
+        />
+
+        @if (isEditMode) {
+          <small> Leave empty if you don't want to change the existing photo. </small>
+        }
+      </div>
+
+      <!-- Preview -->
+
+      @if (previewUrl) {
+        <div class="photo-preview">
+          <p>Preview</p>
+          <img [src]="previewUrl" alt="Item preview" width="200" />
+        </div>
+      }
+
+      <!-- Error -->
+
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <!-- Footer -->
+
+      <div class="modal-footer">
+        <button type="button" class="cancel-button" (click)="closePopup()" [disabled]="loading">
+          Cancel
+        </button>
+
+        <button type="submit" class="save-button" [disabled]="loading">
+          @if (loading) {
+            Saving...
+          }
+
+          @if (!loading) {
+            {{ isEditMode ? 'Update Item' : 'Save Item' }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

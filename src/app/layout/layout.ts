@@ -14,6 +14,15 @@ export class LayoutComponent {
     private authService: AuthService,
   ) {}
 
+  role: any = null;
+
+  ngOnInit(): void {
+    const userData = this.authService.getUser();
+    if (userData) {
+      this.role = userData.role;
+    }
+  }
+
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {

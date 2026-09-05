@@ -16,8 +16,10 @@
 
 .table-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
+  padding: 0;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 table {
@@ -107,11 +109,6 @@ th {
   font-size: 14px;
 }
 
-.error {
-  color: #b91c1c;
-  background: #fee2e2;
-}
-
 .primary-button {
   background: #1e3a5f;
   color: white;
@@ -131,6 +128,11 @@ th {
   text-align: center;
 }
 
+.error {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
 .edit-button,
 .delete-button {
   padding: 7px 12px;
@@ -146,4 +148,12 @@ th {
 
 .delete-button {
   color: #dc2626;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 25px;
+  cursor: pointer;
 }

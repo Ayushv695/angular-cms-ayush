@@ -4,10 +4,11 @@ import { AuthService } from '../../services/auth';
 import { Item } from '../../models/item';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ItemFormComponent } from './item-form/item-form';
 
 @Component({
   selector: 'app-items',
-  imports: [RouterLink],
+  imports: [RouterLink, ItemFormComponent],
   templateUrl: './items.html',
   styleUrl: './items.css',
 })
@@ -22,6 +23,37 @@ export class ItemsComponent implements OnInit {
   loading = false;
   errorMessage = '';
   successMessage = '';
+
+  // for item popup model
+  showItemForm = false;
+  isEditMode = false;
+  selectedItem: Item | null = null;
+
+  openAddItem(): void {
+    this.isEditMode = false;
+    this.selectedItem = null;
+    this.showItemForm = true;
+  }
+
+  openEditItem(item: Item): void {
+    this.isEditMode = true;
+    this.selectedItem = item;
+    this.showItemForm = true;
+  }
+
+  closeItemForm(): void {
+    this.showItemForm = false;
+    this.isEditMode = false;
+    this.selectedItem = null;
+  }
+
+  onItemSaved(): void {
+    const message = this.isEditMode ? 'Item updated successfully.' : 'Item created successfully.';
+    this.closeItemForm();
+    this.successMessage = message;
+    this.loadItems();
+  }
+  // end
 
   closeMessage(): void {
     this.successMessage = '';

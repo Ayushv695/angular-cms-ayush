@@ -6,13 +6,9 @@
   </div>
 
   @if (authService.isAdmin()) {
-    <button class="primary-button">+ Add Item</button>
+    <button class="primary-button" (click)="openAddItem()">+ Add Item</button>
   }
 </div>
-
-@if (loading) {
-  <div class="loading">Loading items...</div>
-}
 
 @if (errorMessage) {
   <div class="error close-box">
@@ -27,6 +23,10 @@
 
     <button type="button" class="close-button" (click)="closeMessage()">×</button>
   </div>
+}
+
+@if (loading) {
+  <div class="loading">Loading items...</div>
 }
 
 @if (!loading && items.length > 0) {
@@ -71,7 +71,7 @@
 
             @if (authService.isAdmin()) {
               <td class="actions">
-                <button class="edit-button">Edit</button>
+                <button class="edit-button" (click)="openEditItem(item)">Edit</button>
 
                 <button class="delete-button" (click)="deleteItem(item)">Delete</button>
               </td>
@@ -85,4 +85,13 @@
 
 @if (!loading && items.length === 0) {
   <div class="empty">No items found.</div>
+}
+
+@if (showItemForm) {
+  <app-item-form
+    [isEditMode]="isEditMode"
+    [item]="selectedItem"
+    (close)="closeItemForm()"
+    (saved)="onItemSaved()"
+  />
 }
