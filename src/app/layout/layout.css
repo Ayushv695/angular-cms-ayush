@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+/* Sidebar */
+
+.sidebar {
+  width: 240px;
+  background: #10233f;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+
+  padding: 15px 10px;
+  margin-bottom: 30px;
+
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+
+  padding: 12px 15px;
+  border-radius: 8px;
+
+  font-size: 15px;
+}
+
+.sidebar a:hover {
+  background: #1f4f91;
+}
+
+.logout {
+  margin-top: auto;
+
+  padding: 12px 15px;
+
+  cursor: pointer;
+}
+
+/* Main */
+
+.main-area {
+  flex: 1;
+}
+
+/* Header */
+
+.header {
+  height: 70px;
+
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 30px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header h2 {
+  margin: 0;
+  color: #172554;
+}
+
+.user {
+  font-size: 15px;
+}
+
+/* Content */
+
+.content {
+  padding: 30px;
+}

@@ -1,0 +1,36 @@
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      🏛️
+      <span>Museum CMS</span>
+    </div>
+
+    <nav>
+      <a routerLink="/dashboard"> 🏠 Dashboard </a>
+
+      <a routerLink="/languages"> 🌐 Languages </a>
+
+      <a routerLink="/items"> 📦 Items </a>
+    </nav>
+
+    <div class="logout">
+      <a (click)="logout()">🚪 Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <!-- Header -->
+    <header class="header">
+      <h2>Museum Translation CMS</h2>
+
+      <div class="user">👤 Manager</div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

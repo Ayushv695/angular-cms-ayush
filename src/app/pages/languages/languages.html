@@ -1,0 +1,176 @@
+<!-- Add language form -->
+@if (showAddForm) {
+  <div class="form-card">
+    <div class="form-header">
+      <div>
+        <h2>Add Language</h2>
+        <p>Add a new language to the system.</p>
+      </div>
+
+      <button type="button" class="close-button" (click)="closeAddForm()">×</button>
+    </div>
+
+    <form (ngSubmit)="createLanguage()">
+      <div class="form-grid">
+        <!-- Name -->
+
+        <div class="form-group">
+          <label for="language-name"> Name </label>
+
+          <input
+            id="language-name"
+            type="text"
+            name="name"
+            [(ngModel)]="newLanguage.name"
+            placeholder="e.g. Spanish"
+            [disabled]="isSaving"
+          />
+        </div>
+
+        <!-- Code -->
+
+        <div class="form-group">
+          <label for="language-code"> Code </label>
+
+          <input
+            id="language-code"
+            type="text"
+            name="code"
+            [(ngModel)]="newLanguage.code"
+            placeholder="e.g. es"
+            maxlength="10"
+            [disabled]="isSaving"
+          />
+        </div>
+
+        <!-- Native Name -->
+
+        <div class="form-group">
+          <label for="native-name"> Native Name </label>
+
+          <input
+            id="native-name"
+            type="text"
+            name="native_name"
+            [(ngModel)]="newLanguage.native_name"
+            placeholder="e.g. Español"
+            [disabled]="isSaving"
+          />
+        </div>
+      </div>
+
+      <!-- Form error -->
+      @if (formError) {
+        <div class="form-error">
+          {{ formError }}
+        </div>
+      }
+
+      <!-- Buttons -->
+
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="closeAddForm()" [disabled]="isSaving">
+          Cancel
+        </button>
+
+        <button type="submit" class="save-button" [disabled]="isSaving">
+          @if (!isSaving) {
+            <span> Save Language </span>
+          }
+
+          @if (isSaving) {
+            <span> Saving... </span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+}
+
+<!-- language listing  -->
+<div class="page-header">
+  <div>
+    <h1>Languages</h1>
+    <p>Manage museum translation languages</p>
+  </div>
+
+  @if (authService.isAdmin()) {
+    <button class="primary-button" (click)="openAddForm()">+ Add Language</button>
+  }
+</div>
+
+@if (loading) {
+  <div class="loading">Loading languages...</div>
+}
+
+@if (errorMessage) {
+  <div class="error close-box">
+    <span>{{ errorMessage }}</span>
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+@if (successMessage) {
+  <div class="success close-box">
+    <span>{{ successMessage }}</span>
+
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+@if (!loading && languages.length > 0) {
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Native Name</th>
+
+          @if (authService.isAdmin()) {
+            <th>Actions</th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (language of languages; track language.id) {
+          <tr>
+            <td>
+              {{ language.id }}
+            </td>
+
+            <td>
+              <strong>
+                {{ language.name }}
+              </strong>
+            </td>
+
+            <td>
+              <span class="code">
+                {{ language.code }}
+              </span>
+            </td>
+
+            <td>
+              {{ language.native_name || '-' }}
+            </td>
+
+            @if (authService.isAdmin()) {
+              <td class="actions">
+                <button class="edit-button">Edit</button>
+
+                <button class="delete-button">Delete</button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+@if (!loading && languages.length === 0) {
+  <div class="empty">No languages found.</div>
+}
