@@ -23,6 +23,8 @@ export class ItemMappingComponent implements OnInit {
   languages: Language[] = [];
   availableLanguages: Language[] = [];
 
+  editingMapping: ItemLanguageMapping | null = null;
+
   constructor(
     private itemMappingService: ItemMappingService,
     private cdr: ChangeDetectorRef,
@@ -84,10 +86,43 @@ export class ItemMappingComponent implements OnInit {
       alert('Please select an item first.');
       return;
     }
+    this.editingMapping = null;
     this.showMappingModal = true;
   }
 
   closeMappingModal(): void {
     this.showMappingModal = false;
+  }
+
+  openEditMappingModal(mapping: ItemLanguageMapping): void {
+    this.editingMapping = mapping;
+    this.showMappingModal = true;
+  }
+
+  deleteMapping(mapping: ItemLanguageMapping): void {
+    const confirmed = confirm(`Are you sure you want to delete this mapping`);
+
+    if (!confirmed) {
+      return;
+    }
+    // this.loading = true;
+    this.itemMappingService.deleteMapping(mapping.id).subscribe({
+      next: (response) => {
+        console.log('Mapping deleted:', response);
+        this.successMessage = 'Mapping deleted successfully.';
+        // this.cdr.detectChanges();
+        if (this.selectedItemId) {
+          this.loadMappings(this.selectedItemId);
+        }
+      },
+
+      error: (error) => {
+        console.error('Delete Mapping error:', error);
+        this.errorMessage = error.error?.message || 'Unable to delete mapping.';
+        if (this.selectedItemId) {
+          this.loadMappings(this.selectedItemId);
+        }
+      },
+    });
   }
 }

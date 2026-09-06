@@ -11,15 +11,23 @@
 
     <div class="modal-body">
       <div class="form-group">
-        <label for="mappingLanguage"> Language </label>
+        <label for="mappingLanguage">Language</label>
 
         <select id="mappingLanguage" class="form-control" [(ngModel)]="mappingLanguageId">
           <option [ngValue]="null">Select language</option>
 
-          @for (language of languages; track language.id) {
-            <option [ngValue]="language.id">
-              {{ language.name }}
+          @if (mapping) {
+            <option [ngValue]="mapping.language_id">
+              {{ mapping.language_name }}
             </option>
+          }
+
+          @for (language of languages; track language.id) {
+            @if (!mapping || language.id !== mapping.language_id) {
+              <option [ngValue]="language.id">
+                {{ language.name }}
+              </option>
+            }
           }
         </select>
       </div>
@@ -65,7 +73,7 @@
     <div class="modal-footer">
       <button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
 
-      <button type="button" class="save-button">Save Mapping</button>
+      <button type="button" class="save-button" (click)="saveMapping()">Save Mapping</button>
     </div>
   </div>
 </div>

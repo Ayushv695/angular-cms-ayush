@@ -47,7 +47,7 @@
       <tr>
         <th>Language</th>
         <th>Translated Name</th>
-        <th>Audio</th>
+        <th>Audio Description</th>
         <!-- <th>Status</th> -->
         <th>Actions</th>
       </tr>
@@ -79,9 +79,9 @@
           </td> -->
 
           <td class="actions">
-            <button class="edit-button">Edit</button>
+            <button class="edit-button" (click)="openEditMappingModal(mapping)">Edit</button>
 
-            <button class="delete-button">Delete</button>
+            <button class="delete-button" (click)="deleteMapping(mapping)">Delete</button>
           </td>
         </tr>
       } @empty {
@@ -97,6 +97,8 @@
   <app-item-mapping-modal
     [itemId]="selectedItemId"
     [languages]="availableLanguages"
+    [mapping]="editingMapping"
     (close)="closeMappingModal()"
+    (saved)="loadMappings(selectedItemId!)"
   />
 }

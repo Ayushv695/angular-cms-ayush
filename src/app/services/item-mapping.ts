@@ -32,17 +32,49 @@ export class ItemMappingService {
   }
 
   // Add mapping
-  addMapping(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/item-mappings`, formData);
+  createMapping(
+    itemId: number,
+    languageId: number,
+    name: string,
+    audio: File | null,
+  ): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('item_id', itemId.toString());
+    formData.append('language_id', languageId.toString());
+    formData.append('name', name);
+
+    if (audio) {
+      formData.append('audio', audio);
+    }
+
+    return this.http.post<any>(`${this.apiUrl}/${API.mapping.create}`, formData);
   }
 
   // Update mapping
-  updateMapping(mappingId: number, formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/item-mappings/${mappingId}`, formData);
+  updateMapping(
+    id: number,
+    itemId: number,
+    languageId: number,
+    name: string,
+    audio: File | null,
+  ): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('item_id', itemId.toString());
+    formData.append('language_id', languageId.toString());
+    formData.append('name', name);
+    formData.append('_method', 'PUT');
+
+    if (audio) {
+      formData.append('audio', audio);
+    }
+
+    return this.http.post<any>(`${this.apiUrl}/${API.mapping.update}/${id}`, formData);
   }
 
   // Delete mapping
   deleteMapping(mappingId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/item-mappings/${mappingId}`);
+    return this.http.delete(`${this.apiUrl}/${API.mapping.destroy}/${mappingId}`);
   }
 }
