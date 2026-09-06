@@ -107,3 +107,9 @@ button:hover {
 
   text-align: left;
 }
+
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}

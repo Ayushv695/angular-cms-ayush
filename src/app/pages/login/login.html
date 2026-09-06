@@ -37,7 +37,15 @@
         </div>
       }
 
-      <button type="submit">Login</button>
+      <button type="submit" [disabled]="loading">
+        @if (loading) {
+          Processing...
+        }
+
+        @if (!loading) {
+          Login
+        }
+      </button>
     </form>
   </div>
 </div>
