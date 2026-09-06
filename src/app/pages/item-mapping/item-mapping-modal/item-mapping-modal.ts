@@ -16,7 +16,7 @@ export class ItemMappingModalComponent implements OnInit {
   @Input() mapping: ItemLanguageMapping | null = null;
 
   @Output() close = new EventEmitter<void>();
-  @Output() saved = new EventEmitter<void>();
+  @Output() saved = new EventEmitter<string>();
 
   constructor(
     private itemMappingService: ItemMappingService,
@@ -28,17 +28,17 @@ export class ItemMappingModalComponent implements OnInit {
   translatedAudio: File | null = null;
   audioPreviewUrl: string | null = null;
   isEditMode = false;
+  errorMessage = '';
+  isSaving = false;
 
   ngOnInit(): void {
     if (this.mapping) {
       this.isEditMode = true;
-
       this.mappingLanguageId = this.mapping.language_id;
       this.translatedName = this.mapping.translated_name;
-
-      console.log('Edit mapping:', this.mapping);
-      console.log('Selected language:', this.mappingLanguageId);
       // this.cdr.detectChanges();
+    } else {
+      this.isEditMode = false;
     }
   }
 
@@ -57,20 +57,23 @@ export class ItemMappingModalComponent implements OnInit {
   }
 
   saveMapping(): void {
+    this.errorMessage = '';
     if (!this.itemId) {
-      alert('Item is required.');
+      this.errorMessage = 'Item is required.';
       return;
     }
 
     if (!this.mappingLanguageId) {
-      alert('Please select a language.');
+      this.errorMessage = 'Please select a language.';
       return;
     }
 
     if (!this.translatedName.trim()) {
-      alert('Please enter translated name.');
+      this.errorMessage = 'Please enter translated name.';
       return;
     }
+
+    this.isSaving = true;
 
     // EDIT
     if (this.mapping) {
@@ -85,13 +88,13 @@ export class ItemMappingModalComponent implements OnInit {
         .subscribe({
           next: (response) => {
             console.log('Mapping updated:', response);
-            alert('Mapping updated successfully.');
-            this.saved.emit();
+            this.saved.emit('Mapping updated successfully.');
             this.closeModal();
           },
           error: (error) => {
+            this.isSaving = false;
             console.error('Error updating mapping:', error);
-            alert(error.error?.message || 'Failed to update mapping.');
+            this.errorMessage = error.error?.message || 'Failed to update mapping.';
             this.cdr.detectChanges();
           },
         });
@@ -110,13 +113,13 @@ export class ItemMappingModalComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('Mapping created:', response);
-          alert('Mapping added successfully.');
-          this.saved.emit();
+          this.saved.emit('Mapping added successfully.');
           this.closeModal();
         },
         error: (error) => {
+          this.isSaving = false;
           console.error('Error creating mapping:', error);
-          alert(error.error?.message || 'Failed to add mapping.');
+          this.errorMessage = error.error?.message || 'Failed to add mapping.';
           this.cdr.detectChanges();
         },
       });

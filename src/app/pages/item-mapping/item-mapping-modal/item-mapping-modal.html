@@ -2,8 +2,14 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <div>
-        <h2>Add Mapping</h2>
-        <p>Add translated name and audio for this item</p>
+        <h2>{{ isEditMode ? 'Edit Mapping' : 'Add Mapping' }}</h2>
+        <p>
+          {{
+            isEditMode
+              ? 'Update translated name and audio for this item'
+              : 'Add translated name and audio for this item'
+          }}
+        </p>
       </div>
 
       <button type="button" class="close-button" (click)="closeModal()">×</button>
@@ -68,12 +74,25 @@
           </div>
         }
       </div>
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
+
+    <!-- Error -->
 
     <div class="modal-footer">
       <button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
 
-      <button type="button" class="save-button" (click)="saveMapping()">Save Mapping</button>
+      <button type="button" class="save-button" (click)="saveMapping()" [disabled]="isSaving">
+        @if (isSaving) {
+          {{ isEditMode ? 'Updating...' : 'Saving...' }}
+        } @else {
+          {{ isEditMode ? 'Update Mapping' : 'Save Mapping' }}
+        }
+      </button>
     </div>
   </div>
 </div>

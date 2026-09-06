@@ -54,40 +54,47 @@
     </thead>
 
     <tbody>
-      @for (mapping of mappings; track mapping.id) {
-        <tr>
-          <td>
-            {{ mapping.language_name }}
-          </td>
+      @if (isLoadingMappings) {
+        <td colspan="5" class="loading-cell">
+          <div class="loading-spinner"></div>
+          <span>Loading mappings...</span>
+        </td>
+      } @else {
+        @for (mapping of mappings; track mapping.id) {
+          <tr>
+            <td>
+              {{ mapping.language_name }}
+            </td>
 
-          <td>
-            {{ mapping.translated_name }}
-          </td>
+            <td>
+              {{ mapping.translated_name }}
+            </td>
 
-          <td>
-            @if (mapping.translated_audio) {
-              <audio controls>
-                <source [src]="mapping.translated_audio" type="audio/mpeg" />
-              </audio>
-            } @else {
-              <span>No audio</span>
-            }
-          </td>
+            <td>
+              @if (mapping.translated_audio) {
+                <audio controls>
+                  <source [src]="mapping.translated_audio" type="audio/mpeg" />
+                </audio>
+              } @else {
+                <span>No audio</span>
+              }
+            </td>
 
-          <!-- <td>
+            <!-- <td>
             <span class="status-badge">Mapped</span>
           </td> -->
 
-          <td class="actions">
-            <button class="edit-button" (click)="openEditMappingModal(mapping)">Edit</button>
+            <td class="actions">
+              <button class="edit-button" (click)="openEditMappingModal(mapping)">Edit</button>
 
-            <button class="delete-button" (click)="deleteMapping(mapping)">Delete</button>
-          </td>
-        </tr>
-      } @empty {
-        <tr>
-          <td colspan="5">No language mappings found for this item.</td>
-        </tr>
+              <button class="delete-button" (click)="deleteMapping(mapping)">Delete</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">No record found.</td>
+          </tr>
+        }
       }
     </tbody>
   </table>
@@ -99,6 +106,6 @@
     [languages]="availableLanguages"
     [mapping]="editingMapping"
     (close)="closeMappingModal()"
-    (saved)="loadMappings(selectedItemId!)"
+    (saved)="onMappingSaved($event)"
   />
 }

@@ -25,6 +25,9 @@ export class ItemMappingComponent implements OnInit {
 
   editingMapping: ItemLanguageMapping | null = null;
 
+  isLoadingItems = false;
+  isLoadingMappings = false;
+
   constructor(
     private itemMappingService: ItemMappingService,
     private cdr: ChangeDetectorRef,
@@ -41,13 +44,16 @@ export class ItemMappingComponent implements OnInit {
 
   loadItems(): void {
     this.errorMessage = '';
+    this.isLoadingItems = true;
     this.itemMappingService.getItems().subscribe({
       next: (response) => {
         this.items = response.data;
+        this.isLoadingItems = false;
         console.log('Items:', this.items);
         this.cdr.detectChanges();
       },
       error: (error) => {
+        this.isLoadingItems = false;
         console.error('Error loading items:', error);
         this.errorMessage = error.error?.message || 'Failed to load items.';
         this.cdr.detectChanges();
@@ -65,14 +71,17 @@ export class ItemMappingComponent implements OnInit {
   }
 
   loadMappings(itemId: number): void {
+    this.isLoadingMappings = true;
     this.itemMappingService.getMappings(itemId).subscribe({
       next: (response) => {
         console.log('Mappings:', response.data);
         this.mappings = response.data.translations.data;
         this.availableLanguages = response.data.languages_available_for_mapping;
+        this.isLoadingMappings = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
+        this.isLoadingMappings = false;
         console.error('Error loading mappings:', error);
         this.mappings = [];
         this.availableLanguages = [];
@@ -83,7 +92,7 @@ export class ItemMappingComponent implements OnInit {
 
   openAddMappingModal(): void {
     if (!this.selectedItemId) {
-      alert('Please select an item first.');
+      this.errorMessage = 'Please select an item first.';
       return;
     }
     this.editingMapping = null;
@@ -124,5 +133,13 @@ export class ItemMappingComponent implements OnInit {
         }
       },
     });
+  }
+
+  onMappingSaved(message: string): void {
+    this.successMessage = message;
+
+    if (this.selectedItemId) {
+      this.loadMappings(this.selectedItemId);
+    }
   }
 }

@@ -116,3 +116,25 @@
 .audio-preview audio {
   width: 100%;
 }
+
+.error-message {
+  margin-bottom: 20px;
+
+  padding: 10px 12px;
+
+  border-radius: 6px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #dc2626;
+
+  font-size: 14px;
+}
+
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
