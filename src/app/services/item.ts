@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
-import { Item } from '../models/item';
 import { API } from '../config/api.config';
 import { ItemListResponse } from '../models/item-list-response';
-import { CreateItemRequest } from '../models/create-item-request';
 
 @Injectable({
   providedIn: 'root',
