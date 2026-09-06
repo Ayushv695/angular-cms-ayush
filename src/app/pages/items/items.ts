@@ -150,6 +150,7 @@ export class ItemsComponent implements OnInit {
       },
 
       error: (error) => {
+        this.hasLoaded = true;
         console.log(error);
         this.errorMessage = error.error?.message || 'Failed to load items.';
         this.loading = false;

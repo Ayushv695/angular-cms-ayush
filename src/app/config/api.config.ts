@@ -2,6 +2,7 @@ export const API = {
   auth: {
     login: 'auth/login',
     logout: 'auth/logout',
+    refresh: 'auth/refresh-token',
   },
   language: {
     list: 'languages',

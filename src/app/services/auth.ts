@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 import { API } from '../config/api.config';
 import { LogoutResponse } from '../models/logout-response';
+import { RefreshTokenResponse } from '../models/refresh-token-response';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,10 @@ export class AuthService {
       email: email,
       password: password,
     });
+  }
+
+  refreshToken(): Observable<RefreshTokenResponse> {
+    return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/${API.auth.refresh}`, {});
   }
 
   logout(): Observable<LogoutResponse> {
