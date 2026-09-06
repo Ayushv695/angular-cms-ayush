@@ -1,0 +1,71 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h2>Add Mapping</h2>
+        <p>Add translated name and audio for this item</p>
+      </div>
+
+      <button type="button" class="close-button" (click)="closeModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="mappingLanguage"> Language </label>
+
+        <select id="mappingLanguage" class="form-control" [(ngModel)]="mappingLanguageId">
+          <option [ngValue]="null">Select language</option>
+
+          @for (language of languages; track language.id) {
+            <option [ngValue]="language.id">
+              {{ language.name }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="translatedName"> Translated Name </label>
+
+        <input
+          id="translatedName"
+          type="text"
+          class="form-control"
+          [(ngModel)]="translatedName"
+          placeholder="Enter translated name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="translatedAudio"> Audio </label>
+
+        <input
+          id="translatedAudio"
+          type="file"
+          class="form-control"
+          accept="audio/*"
+          (change)="onAudioSelected($event)"
+        />
+
+        @if (audioPreviewUrl) {
+          <div class="audio-preview">
+            <div class="audio-file-name">
+              {{ translatedAudio?.name }}
+            </div>
+
+            <audio controls>
+              <source [src]="audioPreviewUrl" />
+              Your browser does not support audio playback.
+            </audio>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
+
+      <button type="button" class="save-button">Save Mapping</button>
+    </div>
+  </div>
+</div>

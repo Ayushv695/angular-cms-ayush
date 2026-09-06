@@ -4,6 +4,10 @@
 
     <p>Manage item names and audio in multiple languages</p>
   </div>
+
+  <button type="button" class="primary-button" (click)="openAddMappingModal()">
+    + Add Mapping
+  </button>
 </div>
 
 @if (errorMessage) {
@@ -88,3 +92,11 @@
     </tbody>
   </table>
 </div>
+
+@if (showMappingModal) {
+  <app-item-mapping-modal
+    [itemId]="selectedItemId"
+    [languages]="availableLanguages"
+    (close)="closeMappingModal()"
+  />
+}
