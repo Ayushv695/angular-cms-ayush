@@ -15,5 +15,13 @@ export const API = {
     create: 'item/create',
     update: 'item/update',
     destroy: 'item/destroy',
+    allItemsList: 'all-items-list',
+  },
+  mapping: {
+    list: 'item-translations',
+    create: 'item/create',
+    update: 'item/update',
+    destroy: 'item/destroy',
+    allItemsList: 'all-items-list',
   },
 };

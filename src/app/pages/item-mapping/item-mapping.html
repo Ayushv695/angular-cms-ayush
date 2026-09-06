@@ -1,1 +1,90 @@
-<p>item-mapping works!</p>
+<div class="page-header">
+  <div>
+    <h1>Item Language Mapping</h1>
+
+    <p>Manage item names and audio in multiple languages</p>
+  </div>
+</div>
+
+@if (errorMessage) {
+  <div class="error close-box">
+    <span>{{ errorMessage }}</span>
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+@if (successMessage) {
+  <div class="success close-box">
+    <span>{{ successMessage }}</span>
+
+    <button type="button" class="close-button" (click)="closeMessage()">×</button>
+  </div>
+}
+
+<div class="mapping-card">
+  <div class="form-group">
+    <label for="item">Select Item</label>
+
+    <select id="item" class="form-control" [(ngModel)]="selectedItemId" (change)="onItemChange()">
+      <option value="">Select an item</option>
+
+      @for (item of items; track item.id) {
+        <option [value]="item.id">
+          {{ item.name }}
+        </option>
+      }
+    </select>
+  </div>
+</div>
+
+<div class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Language</th>
+        <th>Translated Name</th>
+        <th>Audio</th>
+        <!-- <th>Status</th> -->
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (mapping of mappings; track mapping.id) {
+        <tr>
+          <td>
+            {{ mapping.language_name }}
+          </td>
+
+          <td>
+            {{ mapping.translated_name }}
+          </td>
+
+          <td>
+            @if (mapping.translated_audio) {
+              <audio controls>
+                <source [src]="mapping.translated_audio" type="audio/mpeg" />
+              </audio>
+            } @else {
+              <span>No audio</span>
+            }
+          </td>
+
+          <!-- <td>
+            <span class="status-badge">Mapped</span>
+          </td> -->
+
+          <td class="actions">
+            <button class="edit-button">Edit</button>
+
+            <button class="delete-button">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5">No language mappings found for this item.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

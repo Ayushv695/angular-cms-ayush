@@ -67,7 +67,7 @@
 
           <th>Item Name</th>
 
-          <th>Translations</th>
+          <!-- <th>Translations</th> -->
 
           @if (authService.isAdmin()) {
             <th>Actions</th>
@@ -93,11 +93,11 @@
                 </strong>
               </td>
 
-              <td>
+              <!-- <td>
                 <a [routerLink]="['/items', item.id, 'translations']" class="translation-button">
                   Manage Translations
                 </a>
-              </td>
+              </td> -->
 
               @if (authService.isAdmin()) {
                 <td class="actions">
