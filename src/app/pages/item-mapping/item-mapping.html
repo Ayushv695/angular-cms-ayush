@@ -30,7 +30,7 @@
     <label for="item">Select Item</label>
 
     <select id="item" class="form-control" [(ngModel)]="selectedItemId" (change)="onItemChange()">
-      <option value="">Select an item</option>
+      <option [ngValue]="null">Select an item</option>
 
       @for (item of items; track item.id) {
         <option [value]="item.id">
