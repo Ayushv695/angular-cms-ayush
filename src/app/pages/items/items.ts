@@ -146,7 +146,7 @@ export class ItemsComponent implements OnInit {
         this.loading = false;
         this.hasLoaded = true;
         console.log(this.items);
-        this.cdr.detectChanges();
+        // this.cdr.detectChanges();
       },
 
       error: (error) => {
@@ -179,6 +179,7 @@ export class ItemsComponent implements OnInit {
       },
 
       error: (error) => {
+        this.loading = false;
         console.error('Delete Item error:', error);
         this.errorMessage = error.error?.message || 'Unable to delete item.';
         this.cdr.detectChanges();
