@@ -8,7 +8,11 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
 
   // Don't attach token to login request
-  if (req.url.includes(`/${API.auth.login}`) || req.url.includes(`/${API.auth.refresh}`)) {
+  if (
+    req.url.includes(`/${API.auth.login}`) ||
+    req.url.includes(`/${API.auth.refresh}`) ||
+    req.url.includes(`/${API.auth.register}`)
+  ) {
     return next(req);
   }
 
