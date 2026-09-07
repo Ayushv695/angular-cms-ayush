@@ -5,7 +5,13 @@
     <h1>Museum CMS</h1>
 
     <p class="subtitle">Sign in to your account</p>
+    @if (successMessage) {
+      <div class="success close-box">
+        <span>{{ successMessage }}</span>
 
+        <!-- <button type="button" class="close-button" (click)="closeMessage()">×</button> -->
+      </div>
+    }
     <form (ngSubmit)="login()">
       <div class="form-group">
         <label>Email</label>
@@ -47,5 +53,10 @@
         }
       </button>
     </form>
+    <div class="register-link">
+      Don't have an account?
+
+      <a routerLink="/register"> Register </a>
+    </div>
   </div>
 </div>

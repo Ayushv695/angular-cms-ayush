@@ -1,0 +1,150 @@
+.register-page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f6f8;
+}
+
+.register-card {
+  width: 420px;
+  max-width: 90%;
+
+  padding: 35px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+  text-align: center;
+
+  font-size: 42px;
+
+  margin-bottom: 10px;
+}
+
+.register-card h1 {
+  text-align: center;
+
+  margin: 0;
+}
+
+.subtitle {
+  text-align: center;
+
+  color: #777;
+
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 17px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 11px 12px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 7px;
+
+  font-size: 14px;
+
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+
+  border-color: #4f46e5;
+}
+
+.register-card button[type='submit'] {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #4f46e5;
+
+  color: white;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+.register-card button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 10px;
+
+  margin-bottom: 15px;
+
+  border-radius: 6px;
+
+  background: #fee2e2;
+
+  color: #b91c1c;
+
+  font-size: 13px;
+}
+
+.success {
+  padding: 10px;
+
+  margin-bottom: 15px;
+
+  border-radius: 6px;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  font-size: 13px;
+}
+
+.login-link {
+  text-align: center;
+
+  margin-top: 20px;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #4f46e5;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}

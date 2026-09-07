@@ -23,6 +23,22 @@ export class AuthService {
     });
   }
 
+  register(
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirmation: string,
+    role: string,
+  ) {
+    return this.http.post<any>(`${this.apiUrl}/${API.auth.register}`, {
+      name: name,
+      email: email,
+      password: password,
+      password_confirmation: passwordConfirmation,
+      role: role,
+    });
+  }
+
   refreshToken(): Observable<RefreshTokenResponse> {
     return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/${API.auth.refresh}`, {});
   }

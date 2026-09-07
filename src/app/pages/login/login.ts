@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -13,6 +13,7 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
+  successMessage = '';
   loading = false;
 
   constructor(
@@ -20,6 +21,19 @@ export class LoginComponent {
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  ngOnInit(): void {
+    const message = sessionStorage.getItem('registrationSuccess');
+    if (message) {
+      this.successMessage = message;
+      sessionStorage.removeItem('registrationSuccess');
+    }
+  }
+
+  closeMessage(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
+  }
 
   login() {
     this.errorMessage = '';

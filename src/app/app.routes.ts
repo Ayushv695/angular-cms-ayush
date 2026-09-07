@@ -7,12 +7,18 @@ import { ItemsComponent } from './pages/items/items';
 import { LayoutComponent } from './layout/layout';
 import { guestGuard } from './guards/guest-guard';
 import { ItemMappingComponent } from './pages/item-mapping/item-mapping';
+import { RegisterComponent } from './pages/register/register';
 
 export const routes: Routes = [
   // Login - WITHOUT dashboard layout
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
     canActivate: [guestGuard],
   },
 

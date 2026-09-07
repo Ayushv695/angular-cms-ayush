@@ -113,3 +113,46 @@ button:disabled {
 
   cursor: not-allowed;
 }
+
+.close-box {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between !important;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.error-message {
+  margin-bottom: 20px;
+
+  padding: 10px 12px;
+
+  border-radius: 6px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #dc2626;
+
+  font-size: 14px;
+}
+
+.success {
+  margin-bottom: 20px;
+
+  padding: 12px 15px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #15803d;
+
+  border-radius: 7px;
+
+  font-size: 14px;
+}
