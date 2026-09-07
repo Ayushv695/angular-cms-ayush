@@ -146,7 +146,7 @@ export class ItemsComponent implements OnInit {
         this.loading = false;
         this.hasLoaded = true;
         console.log(this.items);
-        // this.cdr.detectChanges();
+        this.cdr.detectChanges();
       },
 
       error: (error) => {
