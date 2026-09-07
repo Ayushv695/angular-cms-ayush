@@ -3,13 +3,13 @@ import { ItemService } from '../../services/item';
 import { AuthService } from '../../services/auth';
 import { Item } from '../../models/item';
 import { ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from '@angular/router';
+// import { RouterLink } from '@angular/router';
 import { ItemFormComponent } from './item-form/item-form';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-items',
-  imports: [RouterLink, ItemFormComponent, FormsModule],
+  imports: [ItemFormComponent, FormsModule],
   templateUrl: './items.html',
   styleUrl: './items.css',
 })
