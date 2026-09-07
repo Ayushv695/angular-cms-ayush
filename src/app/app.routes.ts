@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { LanguagesComponent } from './pages/languages/languages';
 import { ItemsComponent } from './pages/items/items';
-import { TranslationsComponent } from './pages/translations/translations';
 import { LayoutComponent } from './layout/layout';
 import { guestGuard } from './guards/guest-guard';
 import { ItemMappingComponent } from './pages/item-mapping/item-mapping';
@@ -43,10 +42,6 @@ export const routes: Routes = [
         path: 'item-mapping',
         component: ItemMappingComponent,
       },
-      // {
-      //   path: 'items/:id/translations',
-      //   component: TranslationsComponent,
-      // },
     ],
   },
 
